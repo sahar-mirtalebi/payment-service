@@ -6,5 +6,4 @@ CREATE TABLE payment_requests (
     callback_url TEXT,                 
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (request_id) REFERENCES "rent-request-service".rent_requests(id) ON DELETE SET NULL
 );
