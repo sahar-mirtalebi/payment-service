@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Payment Page</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 50px;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Payment Page</h1>
+        <button id="successButton">Payment</button>
+        <button id="cancelButton">Cancel</button>
+    </body>
+    <script>
+        const paymentId = new URLSearchParams(window.location.search).get("paymentId"); 
+    
+        document.getElementById("successButton").onclick = () => {
+            sendPaymentStatus("success");
+        };
+
+        document.getElementById("cancelButton").onclick = () => {
+            sendPaymentStatus("cancel");
+        };
+
+        function sendPaymentStatus(status) {
+            fetch("/payment/mock" , {
+                method : "POST",
+                headers :{
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify({ status, paymentId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Payment status sent:', data); 
+                const callbackURL = `${data.callbackUrl}`;
+                window.location.href = callbackURL; 
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+    </script>
+</html>
